@@ -1,0 +1,13 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Test Report
+coverage
+.nyc_output
+
+.env*
+.terraform

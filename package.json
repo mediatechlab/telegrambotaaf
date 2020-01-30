@@ -1,0 +1,28 @@
+{
+  "name": "telegrambotaaf",
+  "version": "1.0.0",
+  "description": "Lab Drops telegram Bot",
+  "main": "index.js",
+  "scripts": {
+    "config": "sls config credentials --provider aws --key $AWS_KEY --secret $AWS_SECRET",
+    "dev": "node local.js",
+    "test": "tape test/**/*.js"
+  },
+  "repository": "https://gitlab.com/orapouso/telegrambotaaf",
+  "author": "Rafael Raposo",
+  "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^8.1.0",
+    "mocha": "^6.2.0",
+    "ngrok": "^3.2.7",
+    "nyc": "^14.1.1",
+    "serverless": "^1.53.0",
+    "serverless-offline": "^5.9.0",
+    "tape": "^4.11.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "debug": "^4.1.1",
+    "request": "^2.88.0"
+  }
+}
