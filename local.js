@@ -23,13 +23,13 @@ let local = async () => {
   sls.on('error', err => console.log(`failed to start serverless offline: ${err}`))
   sls.on('close', code => console.log(`serverless offline ended with code: ${code}`))
 
-  console.log('starting localtunnel')
+  console.log('starting tunnel')
   let url = ''
   try {
     url = await ngrok.connect(port)
     console.log(`tunnel configured with url: ${url}`)
   } catch(e) {
-    console.log(`failed to start localtunnel: ${err}`)
+    console.log(`failed to start tunnel:`, e)
     console.error(`ABORTING`)
 
     if (!sls.killed) {
@@ -39,7 +39,7 @@ let local = async () => {
   }
 
   try { 
-    let response = await axios({
+    await axios({
       method: 'post',
       url: `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/setWebhook`,
       data: {
