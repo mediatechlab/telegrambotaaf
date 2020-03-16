@@ -4,13 +4,13 @@ const TelegramBot = require('./src/telegram')
 const TOKEN = process.env.TELEGRAM_TOKEN
 const bot = TelegramBot(TOKEN)
 
-const start = require('./src/commands/start')(bot)
-const help = require('./src/commands/help')(bot)
+const start = require('./src/commands/start')
+const help = require('./src/commands/help')
 
 module.exports.entry = async (event) => await bot(event)
 
-bot.on(/\/start/, start.handler)
-bot.on(/\/help/, help.handler)
+bot.on(/\/start/, start)
+bot.on(/\/help/, help)
 
 bot.on('message', async (msg) => {
   //TODO

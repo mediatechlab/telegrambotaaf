@@ -1,15 +1,7 @@
-const debug = require('debug')('telegrambotaaf:help')
+const debug = require('debug')('telegrambotaaf:start')
 
-module.exports = (bot) => {
+module.exports = async function* handler(message) {
+  debug(`message from user id ${message.from.id}`)
 
-  async function handler(message) {
-    const chatId = message.chat.id
-    let response
-    response = `You called /start command. This is an example message just to show that the bot is working`
-    bot.sendMessage(chatId, response)
-  }
-  
-  return {
-    handler,
-  }
+  yield `You called /start command. This is an example message just to show that the bot is working`
 }
