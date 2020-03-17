@@ -1,4 +1,4 @@
-const debug = require('debug')('telegrambotaaf')
+const debug = require('debug')('telegrambotaaf:bot')
 const axios = require('axios')
 
 module.exports = (token) => {

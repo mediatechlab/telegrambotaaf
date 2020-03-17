@@ -21,9 +21,38 @@ After the server is up, you can send messagens directly through telegram to your
 
 ### Env vars:
 
-#### Mandatory:
+#### Required:
  - `TELEGRAM_TOKEN` token from the [@BotFather](https://telegram.me/botfather)
- - `BUCKET` 
+ - `DEBUG` comma separated namespaces to activate [debug](https://github.com/visionmedia/debug) log
 
 #### Optional:
  - `PORT||3000` ngrok tunnel and serverless-offline port
+
+## Deploy
+
+The deployment is already configured to use GitlabCI. If you don't use it, you can deploy using the serverless framework from your local machine.
+
+Configure the `required` environment variables above and the following:
+
+- `AWS_ACCESS_KEY_ID` your AWS service user Access Key Id
+- `AWS_SECRET_ACCESS_KEY` your AWS service user Secret Access Key
+
+### GitlabCI
+
+```sh
+git push origin master
+```
+
+### Local machine
+
+One time configuration:
+```sh
+npm run config
+```
+
+Every deploy:
+```sh
+npm run deploy
+```
+
+

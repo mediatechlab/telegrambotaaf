@@ -12,7 +12,7 @@ module.exports.entry = async (event) => await bot(event)
 bot.on(/\/start/, start)
 bot.on(/\/help/, help)
 
-bot.on('message', async (msg) => {
+bot.on('message', async function* (msg) {
   //TODO
   const chatId = msg.chat.id
   debug('generic message, ignoring')

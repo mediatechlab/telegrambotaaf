@@ -4,9 +4,10 @@
   "description": "Lab Drops telegram Bot",
   "main": "index.js",
   "scripts": {
-    "config": "sls config credentials --provider aws --key $AWS_KEY --secret $AWS_SECRET",
     "dev": "node local.js",
-    "test": "tape test/**/*.js"
+    "test": "tape test/**/*.js",
+    "config": "sls config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY",
+    "deploy": "sls deploy -v"
   },
   "repository": "https://gitlab.com/orapouso/telegrambotaaf",
   "author": "Rafael Raposo",
