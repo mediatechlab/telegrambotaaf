@@ -28,6 +28,59 @@ After the server is up, you can send messagens directly through telegram to your
 #### Optional:
  - `PORT||3000` ngrok tunnel and serverless-offline port
 
+### Commands
+
+On `handler.js` add a new command as a regex which even accepts named grouping as handlers parameters.
+
+One important thing is handler order. The bot returns on the first handler match, so, if you have two different handlers to the same _path_, and one accepts parameters, put the one with parameters firts.
+
+Simple command example:
+```js
+// handler.js
+const mycommand = require('./src/commands/mycommand')
+
+...
+
+bot.on(/\/mycommand/, mycommand) // mycommand handler should be a generator that yields messages
+                                 // to be  sent back to telegram
+
+// mycommand.js
+async function* handler(message) {
+  yield `hi ${message.from.first_name} from my command`
+}
+```
+
+Named param command example:
+```js
+// handler.js
+const mycommand = require('./src/commands/mycommand')
+
+...
+
+bot.on(/\/mycommand (?<action>action1|action2) (?<opt>op1|op2)/, mycommand) // 
+
+// mycommand.js
+async function* handler(message, { action, opt }[, match]) {// match is the regex.exec(text) return
+  yield `hi ${message.from.first_name} from my command. You want to do action ${action} with option ${opt}`
+  // match[0] === action, match[1] === opt
+}
+```
+
+Positional param command example:
+```js
+// handler.js
+const mycommand = require('./src/commands/mycommand')
+
+...
+
+bot.on(/\/mycommand (param1|param2) (opt1|opt2)/, mycommand) // 
+
+// mycommand.js
+async function* handler(message, match) {// match is the regex.exec(text) return
+  yield `hi ${message.from.first_name} from my command. You want to do action ${match[0]} with option ${match[1]}`
+}
+```
+
 ## Deploy
 
 The deployment is already configured to use GitlabCI. If you don't use it, you can deploy using the serverless framework from your local machine.
