@@ -4,6 +4,7 @@ const axios = require('axios')
 module.exports = (token) => {
   const BASE_URL = `https://api.telegram.org/bot${token}`
   const SENDMESSAGE_URL = `${BASE_URL}/sendMessage`
+  const UPDATEMESSAGE_URL = `${BASE_URL}/editMessageText`
   let listeners = []
   listeners.onmemberjoin = listeners.onmemberleave = () => {}
 
@@ -12,10 +13,11 @@ module.exports = (token) => {
     data.text = text
     data.parse_mode='Markdown'
     data.disable_web_page_preview = true
-    return axios.post(SENDMESSAGE_URL, data)
+    debug('sending message', text)
+    return axios.post(data.message_id ? UPDATEMESSAGE_URL : SENDMESSAGE_URL, data)
   }
 
-  let onMessage = async (regex, cb) => {
+  async function onMessage (regex, cb) {
     if (typeof regex === 'string') {
       regex = new RegExp(regex)
     }
@@ -23,15 +25,15 @@ module.exports = (token) => {
     listeners.push({regex, cb})
   }
 
-  let onMemberJoin = async (cb) => {
+  async function onMemberJoin (cb) {
     listeners.onmemberjoin = cb
   }
 
-  let onMemberLeave = async (cb) => {
+  async function onMemberLeave (cb) {
     listeners.onmemberleave = cb
   }
 
-  let processUpdate = async (event) => {
+  async function processUpdate (event) {
     debug('processUpdate', typeof event.body)
     let data = typeof event.body === 'string' ? JSON.parse(event.body) : event.body
     debug('new message', data)
@@ -58,7 +60,7 @@ module.exports = (token) => {
       if (listener) {
         try {
           debug(`listener found executing command update_id[${updateId}] message_id[${messageId}]`)
-          for await (let response of listener.cb(message, listener.matches)) {
+          for await (let response of listener.cb(message, listener.matches.groups || listener.matches, listener.matches)) {
             debug('dentro do for await', response)
             if (response) {
               debug(`sending message  update_id[${updateId}] message_id[${messageId}]`)
@@ -66,7 +68,7 @@ module.exports = (token) => {
               debug(`message sent update_id[${updateId}] message_id[${messageId}]=>${response}`)
             }
           }
-          debug(`command success update_id[${updateId}] message_id[${messageId}]`)
+          debug(`ended command success update_id[${updateId}] message_id[${messageId}]`)
         } catch(e) {
           debug(`UNEXPECTED ERROR DURING command exec`, e)
         }
